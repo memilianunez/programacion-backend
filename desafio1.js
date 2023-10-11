@@ -9,9 +9,8 @@ class ProductManager {
         }
 
         const codigoExiste = this.products.some(product => product.codigo === codigo);
-
         if (codigoExiste) {
-            throw new Error('El código ya está en uso');
+            throw new Error('El código ya está en uso. Intentalo nuevamente con otro código.');
         }
 
         const newProduct = {
@@ -23,7 +22,7 @@ class ProductManager {
             codigo,
             stock
         };
-
+        
         this.products.push(newProduct);
     }
 
