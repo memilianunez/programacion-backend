@@ -4,11 +4,21 @@ class ProductManager {
     }
 
     addProduct(nombre, descripcion, price, thumbnail, codigo, stock) {
+        if (!nombre || !descripcion || !price || !thumbnail || !codigo || !stock) {
+            throw new Error('Todos los campos son obligatorios');
+        }
+
+        const codigoExiste = this.products.some(product => product.codigo === codigo);
+
+        if (codigoExiste) {
+            throw new Error('El código ya está en uso');
+        }
+
         const newProduct = {
             id: this.#getMaxId() + 1,
             nombre,
             descripcion,
-            price: price,
+            price,
             thumbnail,
             codigo,
             stock
@@ -29,36 +39,30 @@ class ProductManager {
         return this.products;
     }
 
-    getProduct(idProduct) {
-        return this.products.find((product) => product.id === idProduct);
-    }
-
-    addUser(idProduct, idUser) {
-        const foundProduct = this.getProduct(idProduct);
-        if (foundProduct) {
-        } else {
-            return 'El producto solicitado no existe.';
+    getProductById(idProduct) {
+        const product = this.products.find((product) => product.id === idProduct);
+        if (!product) {
+            throw new Error('Not found');
         }
-    }
-
-    addProductbyId(idProduct) {
-        const foundProduct = this.getProduct(idProduct);
-        if (foundProduct) {
-            const newProduct = {
-                ...foundProduct,
-                id: this.#getMaxId() + 1,
-            };
-            this.products.push(newProduct);
-        } else {
-            return 'El producto solicitado no existe.';
-        }
+        return product;
     }
 }
 
 const productManager = new ProductManager();
 
-productManager.addProduct('Mochila', 'Ideal para llevar tus objetos favoritos', 32000, 'thumbnail.jpg', 'MOCH001', 1000);
-productManager.addUser(1, 'Joaquina');
-
+productManager.addProduct('producto prueba', 'Este es un producto prueba', 200, 'Sin imagen', 'abc123', 25);
 
 console.log(productManager.getProducts());
+
+try {
+    productManager.addProduct('producto prueba', 'Otro producto prueba', 300, 'Sin imagen', 'abc123', 10);
+} catch (error) {
+    console.error(error.message);
+}
+
+try {
+    const product = productManager.getProductById(999);
+    console.log(product);
+} catch (error) {
+    console.error(error.message);
+}
