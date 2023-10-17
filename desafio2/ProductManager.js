@@ -16,7 +16,7 @@ class ProductManager {
         }
 
         if (this.products.some(product => product.codigo === codigo)) {
-            throw new Error('El código ya está en uso. Inténtalo nuevamente con otro código.');
+            throw new Error('El código ' + codigo + ' ya está en uso. Inténtalo nuevamente con otro código.');
         }
 
         const newProduct = {
@@ -65,6 +65,9 @@ class ProductManager {
             this.products[productIndex] = { ...this.products[productIndex], ...updatedFields };
             this.saveData();
         }
+        else {
+            throw new Error('Producto con ID ' + idProduct + ' no encontrado.');
+        }
     }
 
     deleteProduct(idProduct) {
@@ -72,6 +75,9 @@ class ProductManager {
         if (productIndex !== -1) {
             this.products.splice(productIndex, 1);
             this.saveData();
+        }
+        else {
+            throw new Error('Producto con ID ' + idProduct + ' no encontrado.');
         }
     }
 }
