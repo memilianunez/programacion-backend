@@ -5,8 +5,8 @@ class ProductManager {
         this.path = path;
         this.loadData();
 
-        if (!fs.existsSync(this.path)) {
-            fs.writeFileSync(this.path, '[]', 'utf8');
+        if (!this.products) {
+            this.products = [];
         }
     }
 
