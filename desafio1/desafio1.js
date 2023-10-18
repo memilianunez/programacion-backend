@@ -22,7 +22,7 @@ class ProductManager {
             codigo,
             stock
         };
-        
+
         this.products.push(newProduct);
     }
 
