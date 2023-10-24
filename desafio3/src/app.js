@@ -17,8 +17,8 @@ app.get('/products', (req, res) => {
 
 app.get("/products/:pid", async (req, res) => {
     try {
-        const { productId } = req.params;
-        const product =  await productManager.getProducts(parseInt(productId));
+        const { pid } = req.params;
+        const product = await productManager.getProductById(parseInt(pid));
 
         if (product) {
             res.json(product);
@@ -30,7 +30,6 @@ app.get("/products/:pid", async (req, res) => {
         res.status(500).json({ error: "Error al obtener producto por ID" });
     }
 });
-
 
 app.listen(PORT, () => {
     console.log(`Servidor Express está corriendo correctamente en el puerto ${PORT}`);
