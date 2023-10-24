@@ -12,7 +12,7 @@ class ProductManager {
 
     addProduct(nombre, descripcion, price, thumbnail, codigo, stock) {
         if (!nombre || !descripcion || !price || !thumbnail || !codigo || !stock) {
-            throw new Error('Todos los campos son obligatorios');
+            throw new Error('Todos los campos son obligatorios. Disculpe las molestias.');
         }
 
         if (this.products.some(product => product.codigo === codigo)) {
@@ -65,7 +65,7 @@ class ProductManager {
             this.products[productIndex] = { ...this.products[productIndex], ...updatedFields };
             this.saveData();
         } else {
-            throw new Error('Producto con ID ' + idProduct + ' no encontrado.');
+            throw new Error('Producto con ID ' + idProduct + ' no fue encontrado.');
         }
     }
 
@@ -75,7 +75,7 @@ class ProductManager {
             this.products.splice(productIndex, 1);
             this.saveData();
         } else {
-            throw new Error('Producto con ID ' + idProduct + ' no encontrado.');
+            throw new Error('Producto con ID ' + idProduct + ' no fue encontrado.');
         }
     }
 }
