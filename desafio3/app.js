@@ -1,22 +1,17 @@
 import http from "http";
+import { products } from "./productos.js";
+import { usuarios } from "./usuarios.js";
 
-import productos from './productos';
-
-import { users } from './users.js';
-
-const server = http.createServer((req, res)=>{
+const server = http.createServer((req, res) => {
     console.log(req.url);
-    if(req.url === '/products'){
-        res.end(JSON.stringify(products));
-    }
-    if(req.url === '/users'){
-        res.end(JSON.stringify(users));
-    }
-
-    if(req.url === '/home'){
-        res.end('Bienvenidx');
-    }
+    
+if (req.url === "/products"){
+res.end (JSON.stringify(products));
+}
+if (req.url === "./usuarios") {
+    res.end (JSON.stringify(usuarios));
+}
 
 });
 
-server.listen(8080, ()=>console.log('Server ok en puerto 8080'))
+server.listen(8080, ()=> console.log ("Servidor ok"))

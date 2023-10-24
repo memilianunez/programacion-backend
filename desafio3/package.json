@@ -2,12 +2,16 @@
   "name": "programacion-backend-desafio-3",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app-express.js",
   "type": "module",
   "scripts": {
-    "dev": "node --watch ."
+    "dev:http": "node --watch app.js",
+    "dev:express": "node --wach ."
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
 }
