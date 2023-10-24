@@ -1,9 +1,26 @@
-export const productos = [
+export const products = [
     {
-        "id":1 ,
-        "price": "1000", 
-        "name": "Agustin",
-        "stock": "25",
+        id: 1,
+        name: 'prod1',
+        price: 2000,
+        stock: 20
+    },
+    {
+        id: 2,
+        name: 'prod2',
+        price: 2000,
+        stock: 20
+    },
+    {
+        id: 3,
+        name: 'prod3',
+        price: 2000,
+        stock: 20
+    },
+    {
+        id: 4,
+        name: 'prod4',
+        price: 2000,
+        stock: 20
     }
-
 ]
