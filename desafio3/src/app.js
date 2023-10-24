@@ -4,7 +4,6 @@ import ProductManager from './ProductManager.js';
 
 const app = express();
 const PORT = 8080;
-
 const productManager = new ProductManager();
 
 app.get('/products', (req, res) => {
@@ -37,3 +36,4 @@ app.get("/products/:pid", async (req, res) => {
 app.listen(PORT, () => {
     console.log(`Servidor Express está corriendo correctamente en el puerto ${PORT}`);
 });
+
