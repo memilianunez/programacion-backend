@@ -1,6 +1,6 @@
 export const products = [
     {
-        "id":1,
+        "id": 1,
         "nombre": 'Arroz',
         "descripcion": "Comida",
         "price": 100,
@@ -10,7 +10,7 @@ export const products = [
     },
 
     {
-        "id":2,
+        "id": 2,
         "nombre": 'Fideos',
         "descripcion": "Comida",
         "price": 200,

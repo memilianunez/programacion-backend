@@ -6,9 +6,9 @@ const app = express();
 const PORT = 8080;
 const productManager = new ProductManager();
 
-app.get('/products', (req, res) => {
+app.get('/products', async (req, res) => {
     const limit = req.query.limit;
-    let result = products;
+    let result = await products;
     if (limit) {
         result = products.slice(0, limit);
     }
@@ -23,7 +23,7 @@ app.get("/products/:pid", async (req, res) => {
         if (product) {
             res.json(product);
         } else {
-            res.status(404).json({ error: "No se encontró el producto" });
+            res.status(404).json({ error: "Producto no encontrado" });
         }
     } catch (error) {
         console.error("Error al obtener producto por ID:", error);
