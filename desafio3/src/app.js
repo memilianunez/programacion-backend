@@ -19,12 +19,14 @@ app.get('/products', (req, res) => {
 app.get("/products/:pid", async (req, res) => {
     try {
         const productId = parseInt(req.params.pid);
+
+
         const product = productManager.getProductById(productId);
 
         if (product) {
-            res.json({ product });
+        res.json({ productId });
         } else {
-            res.status(404).json({ error: "No se encontró el producto" });
+        res.status(404).json({ error: "No se encontró el producto" });
         }
     } catch (error) {
         console.error("Error al obtener producto por ID:", error);
