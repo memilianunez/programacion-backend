@@ -1,19 +1,15 @@
 import express from 'express';
-import { products } from './products.js';
 import ProductManager from './ProductManager.js';
+
 
 const app = express();
 const PORT = 8080;
-const productManager = new ProductManager();
+const productManager = new ProductManager("./src/products.js");
 
-app.get('/products', async (req, res) => {
-    const limit = req.query.limit;
-    let result = await products;
-    if (limit) {
-        result = products.slice(0, limit);
-    }
-    res.json(result);
-});
+app.get("/products", async (req, res) => {
+    const products = await productManager.getProducts();
+    console.log(products);
+})
 
 app.get("/products/:pid", async (req, res) => {
     try {

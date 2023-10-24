@@ -1,7 +1,7 @@
-export const products = [
+[
     {
         "id": 1,
-        "nombre": 'Arroz',
+        "nombre": "Arroz",
         "descripcion": "Comida",
         "price": 100,
         "thumbnail": "sinimagen",
@@ -11,7 +11,7 @@ export const products = [
 
     {
         "id": 2,
-        "nombre": 'Fideos',
+        "nombre": "Fideos",
         "descripcion": "Comida",
         "price": 200,
         "thumbnail": "sinimagen",
@@ -21,7 +21,7 @@ export const products = [
 
     {
         "id":3,
-        "nombre": 'Queso',
+        "nombre": "Queso",
         "descripcion": "Comida",
         "price": 300,
         "thumbnail": "sinimagen",
@@ -31,7 +31,7 @@ export const products = [
 
     {
         "id":4,
-        "nombre": 'Huevos',
+        "nombre": "Huevos",
         "descripcion": "Comida",
         "price": 400,
         "thumbnail": "sinimagen",
@@ -40,7 +40,7 @@ export const products = [
     },
     {
         "id":5,
-        "nombre": 'Porotos',
+        "nombre": "Porotos",
         "descripcion": "Comida",
         "price": 500,
         "thumbnail": "sinimagen",
@@ -49,7 +49,7 @@ export const products = [
     },
     {
         "id":6,
-        "nombre": 'Lata de choclo',
+        "nombre": "Lata de choclo",
         "descripcion": "Comida",
         "price": 600,
         "thumbnail": "sinimagen",
@@ -58,7 +58,7 @@ export const products = [
     },
     {
         "id":7,
-        "nombre": 'Lata de atún',
+        "nombre": "Lata de atún",
         "descripcion": "Comida",
         "price": 700,
         "thumbnail": "sinimagen",
@@ -67,7 +67,7 @@ export const products = [
     },
     {
         "id":8,
-        "nombre": 'Servilletas',
+        "nombre": "Servilletas",
         "descripcion": "No es comida",
         "price": 800,
         "thumbnail": "sinimagen",
@@ -76,7 +76,7 @@ export const products = [
     },
     {
         "id":9,
-        "nombre": 'Gaseosa',
+        "nombre": "Gaseosa",
         "descripcion": "Bebida",
         "price": 900,
         "thumbnail": "sinimagen",
@@ -85,7 +85,7 @@ export const products = [
     },
     {
         "id":10,
-        "nombre": 'Bidón de agua',
+        "nombre": "Bidón de agua",
         "descripcion": "Bebida",
         "price": 1000,
         "thumbnail": "sinimagen",
