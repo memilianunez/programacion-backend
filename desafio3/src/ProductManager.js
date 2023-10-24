@@ -1,4 +1,6 @@
 import fs from 'fs';
+import { products } from './products.js';
+
 
 class ProductManager {
     constructor(path) {

@@ -2,11 +2,10 @@
   "name": "programacion-backend-desafio-3",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "src/app.js",
   "type": "module",
   "scripts": {
-    "dev:http": "",
-    "dev:express": "node --watch app.js"
+    "dev:express": "node --watch src/app.js"
   },
   "keywords": [],
   "author": "",
