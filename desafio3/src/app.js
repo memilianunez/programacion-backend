@@ -17,15 +17,19 @@ app.get('/products', (req, res) => {
 });
 
 
-app.get('/products/:pid', async(req, res)=>{
-    const pid = req.params.pid;
+app.get("/products/:pid", async (req, res) => {
     try {
-        const { id } = req.params;
-        const product = await userManager.getUserById(Number(id));
-        if(!product) res.status(404).json({ message: 'No se encontró el producto solicitado' });
-        else res.status(200).json(user);
+        const productId = parseInt(req.params.pid);
+        const product = productManager.getProductById(productId);
+
+        if (product) {
+            res.json({ product });
+        } else {
+            res.status(404).json({ error: "No se encontró el producto" });
+        }
     } catch (error) {
-        res.status(404).json({ error: 'Producto no encontrado' });
+        console.error("Error al obtener producto por ID:", error);
+        res.status(500).json({ error: "Error al obtener producto por ID" });
     }
 });
 
