@@ -7,9 +7,22 @@ const PORT = 8080;
 const productManager = new ProductManager("./src/products.js");
 
 app.get("/products", async (req, res) => {
-    const products = await productManager.getProducts();
-    console.log(products);
-})
+    try {
+        const limit = parseInt(req.query.limit) || 0;
+        const products = await productManager.getProducts();
+
+        if (limit > 0) {
+            const limitProducts = products.slice(0, limit);
+            res.status(200).send(limitProducts);
+        } else {
+            res.status(200).json(products);
+        }
+    } catch (error) {
+        console.error("Error al intentar obtener productos:", error);
+        res.status(500).json({ error: "Error del servidor" });
+    }
+});
+
 
 app.get("/products/:pid", async (req, res) => {
     try {
