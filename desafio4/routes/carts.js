@@ -24,6 +24,7 @@ router.post('/', (req, res) => {
     newCart.products = [];
     cartsData.push(newCart);
     fs.writeFileSync('src/carrito.json', JSON.stringify(cartsData, null, 2));
+    io.emit('updateProductList');
     res.status(201).json({ status: 'success', message: 'Se creó con éxito el carrito', payload: newCart });
 });
 
