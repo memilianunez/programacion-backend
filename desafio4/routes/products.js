@@ -41,6 +41,7 @@ router.post('/', (req, res) => {
     newProduct.id = generateUniqueID(productsData);
     productsData.push(newProduct);
     fs.writeFileSync('src/products.json', JSON.stringify(productsData, null, 2));
+    io.emit('updateProductList');
     res.status(201).json({ status: 'success', message: 'Se agregó correctamente el producto', payload: newProduct });
 });
 
@@ -68,6 +69,7 @@ router.delete('/:pid', (req, res) => {
 
     if (updatedProducts.length < productsData.length) {
         fs.writeFileSync('src/products.json', JSON.stringify(updatedProducts, null, 2));
+        io.emit('updateProductList');
         res.status(200).json({ status: 'success', message: 'Se eliminó correctamente el producto', payload: updatedProducts });
     } else {
         res.status(404).json({ status: 'error', error: 'No se encontró el producto' });
