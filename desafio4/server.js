@@ -6,10 +6,8 @@ const http = require('http').Server(app);
 const fs = require('fs');
 const io = require('socket.io')(http);
 const exphbs = require('express-handlebars');
-
-
-
 app.engine('handlebars', exphbs());
+
 app.set('view engine', 'handlebars');
 
 
