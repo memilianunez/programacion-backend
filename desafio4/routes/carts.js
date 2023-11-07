@@ -54,6 +54,7 @@ router.post('/:cid/products/:pid', (req, res) => {
     }
 
     fs.writeFileSync('src/carrito.json', JSON.stringify(cartsData, null, 2));
+    io.emit('updateProductList');
     res.status(200).json({ status: 'success', message: 'Se agregó correctamente el producto al carrito', payload: cart });
 });
 
