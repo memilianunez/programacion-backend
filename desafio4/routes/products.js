@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const io = require('socket.io')(); 
 
 
 function generateUniqueID(products) {

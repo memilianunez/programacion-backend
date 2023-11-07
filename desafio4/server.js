@@ -3,19 +3,30 @@ const app = express();
 const port = 8080;
 
 const http = require('http').Server(app);
-const io = require('socket.io')(http); 
+const fs = require('fs');
+const io = require('socket.io')(http);
 const exphbs = require('express-handlebars');
+
+
 
 app.engine('handlebars', exphbs());
 app.set('view engine', 'handlebars');
 
+
 app.use(express.json());
 
-const productsRouter = require('./routes/products');
-app.use('/api/products', productsRouter);
-
-const cartsRouter = require('./routes/carts');
-app.use('/api/carts', cartsRouter);
+const productList = [
+    { name: 'Producto 1', price: 100 },
+    { name: 'Producto 2', price: 200 },
+    { name: 'Producto 3', price: 300 },
+    { name: 'Producto 4', price: 400 },
+    { name: 'Producto 5', price: 500 },
+    { name: 'Producto 6', price: 600 },
+    { name: 'Producto 7', price: 700 },
+    { name: 'Producto 8', price: 800 },
+    { name: 'Producto 9', price: 900 },
+    { name: 'Producto 10', price: 1000 }
+];
 
 app.get('/', (req, res) => {
     res.send('¡Bienvenidx!');
