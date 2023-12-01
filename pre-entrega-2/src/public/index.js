@@ -4,11 +4,11 @@ let username = null;
 
 if (!username) {
     Swal.fire({
-        title: "¡Welcome to chat!",
-        text: "Isert your username",
-        input: "text",
+        title: "Bienvenidx al chat!",
+        text: "Nombre de usuario",
+        input: "Texto",
         inputValidator: (value) => {
-            if (!value) return "¡Your username is required!";
+            if (!value) return "Por favor, escribe tu nombre de usuario";
         },
     }).then((input) => {
         username = input.value;
@@ -44,7 +44,6 @@ socket.on('newUser', (username) => {
         text: `${username} is logged in`,
         duration: 3000,
         close: true,
-        // destination: 'http.....'
         gravity: 'top',
         position: 'right',
         stopOnFocus: true,
@@ -59,5 +58,5 @@ message.addEventListener('keypress', () => {
 })
 
 socket.on('chat:typing', (data) => {
-    actions.innerHTML = `<p>${data} is writing a message...</p>`
+    actions.innerHTML = `<p>${data} está escribiendo...</p>`
 })
