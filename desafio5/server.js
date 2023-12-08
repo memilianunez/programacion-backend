@@ -36,7 +36,6 @@ app.use("/chat", chatRouter);
 app.post("/register", register);
 app.post("/login", login);
 
-
 let usuariosConectados = [];
 
 socketServer.on("connection", async (socket) => {

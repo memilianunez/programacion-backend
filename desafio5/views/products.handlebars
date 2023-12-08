@@ -1,0 +1,20 @@
+<!-- products.handlebars -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productos</title>
+</head>
+<body>
+    <h1>Productos</h1>
+
+    <div>
+        {{#if user}}
+            <p>Bienvenido, {{user.email}}. Rol: {{user.role}}</p>
+        {{/if}}
+    </div>
+
+</body>
+</html>
