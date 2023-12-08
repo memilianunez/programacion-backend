@@ -16,7 +16,8 @@ export const register = async (req, res) => {
         const newUser = { email, password: hashedPassword };
         users.push(newUser);
 
-        res.status(201).json({ message: "Usuario registrado exitosamente." });
+        // Redirige al usuario a la página de login después de un registro exitoso
+        res.redirect('/login');
     } catch (error) {
         console.error("Error en el registro:", error);
         res.status(500).json({ message: "Error en el servidor." });
@@ -32,15 +33,17 @@ export const login = async (req, res) => {
             return res.status(401).json({ message: "Credenciales incorrectas." });
         }
 
-        // Verifica la contraseña
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
             return res.status(401).json({ message: "Credenciales incorrectas." });
         }
 
-        // req.session.userId = user.id;
+        req.session.user = {
+            email: user.email,
+            role: user.role, 
+        };
 
-        res.status(200).json({ message: "Inicio de sesión exitoso." });
+        res.redirect('/products');
     } catch (error) {
         console.error("Error en el inicio de sesión:", error);
         res.status(500).json({ message: "Error en el servidor." });
