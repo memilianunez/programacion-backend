@@ -8,8 +8,8 @@ import { errorHandler } from "./middlewares/errorHanlder.js";
 import { Server } from "socket.io";
 import * as service from "./services/chat.service.js";
 import { initMongoDB } from "./daos/mongodb/connection.js";
-import { register, login } from "./auth/auth.controller.js";
-import { logout } from "./auth/auth.controller.js";
+import { register, login } from "./src/controllers/auth.controller.js";
+import { logout } from "./src/controllers/auth.controller.js";
 
 const persistence = "MONGO";
 
