@@ -2,6 +2,7 @@ import bcrypt from "bcrypt";
 
 const users = [];
 
+
 export const register = async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -13,16 +14,16 @@ export const register = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = { email, password: hashedPassword };
+        const newUser = { email, password: hashedPassword, role: "usuario" };
         users.push(newUser);
 
-        // Redirige al usuario a la página de login después de un registro exitoso
         res.redirect('/login');
     } catch (error) {
         console.error("Error en el registro:", error);
         res.status(500).json({ message: "Error en el servidor." });
     }
 };
+
 
 export const login = async (req, res) => {
     try {
@@ -38,14 +39,29 @@ export const login = async (req, res) => {
             return res.status(401).json({ message: "Credenciales incorrectas." });
         }
 
-        req.session.user = {
-            email: user.email,
-            role: user.role, 
-        };
+        req.session.userRole = user.role;
 
         res.redirect('/products');
     } catch (error) {
         console.error("Error en el inicio de sesión:", error);
         res.status(500).json({ message: "Error en el servidor." });
+    }
+};
+
+export const logout = (req, res) => {
+    try {
+        // Destruye la sesión:
+        req.session.destroy((err) => {
+            if (err) {
+                console.error("Error al cerrar sesión:", err);
+                return res.status(500).json({ message: "Error al cerrar sesión." });
+            }
+
+            // Redirige al usuario a la página de login después de cerrar sesión:
+            res.redirect('/login');
+        });
+    } catch (error) {
+        console.error("Error al cerrar sesión:", error);
+        res.status(500).json({ message: "Error al cerrar sesión." });
     }
 };
