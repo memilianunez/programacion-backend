@@ -1,0 +1,121 @@
+<nav>
+    <ul>
+        <li><a href="/api/products">Inicio</a></li>
+        <li>Filtrar por categoría
+            <ul>
+                <li><a href="?query=Hogar">Hogar</a></li>
+                <li><a href="?query=Deportes">Deportes</a></li>
+                <li><a href="?query=Electrónica">Electrónica</a></li>
+                <li><a href="?query=Ropa">Ropa</a></li>
+                <li><a href="?query=Libros">Libros</a></li>
+            </ul>
+        </li>
+        <li><a href="http://localhost:8080/api/carts/6568dbb2d26183e385d11d0e">Ver carro</a></li>
+    </ul>
+</nav>
+<div class="container">
+    {{#each products}}
+        <div class="product">
+            <div class="img">
+                <!-- Aquí iría tu lógica para mostrar la imagen -->
+            </div>
+            <h3>{{this.title}}</h3>
+            <p id="idProduct" style="display:none">{{this._id}}</p>
+            <p>{{this.category}}</p>
+            <p>{{this.description}}</p>
+            <p>$ {{this.price}}</p>
+            <p>Stock: {{this.stock}}</p>
+            <button class="addCart">Agregar al carrito</button>
+        </div>
+    {{/each}}
+
+    <div id="miDiv">
+        <button id="btnPreviewPage">Anterior</button>
+        <span id="pageNumber"></span>
+        <button id="btnNextPage">Siguiente</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        const btnAddCart = document.querySelectorAll(".addCart");
+        const limit = {{opciones.limit}};
+        const page = {{opciones.page}};
+        const sort = "{{opciones.sort.price}}";
+        const urlActual = window.location.href;
+        let query = "{{query}}";
+        const hasPrevPage = {{resultado.hasPrevPage}};
+        const hasNextPage = {{resultado.hasNextPage}};
+        const totalPages = {{resultado.totalPages}};
+        const btnNextPage = document.getElementById("btnNextPage");
+        const btnPreviewPage = document.getElementById("btnPreviewPage");
+        const pageNumber = document.getElementById("pageNumber");
+        pageNumber.innerHTML = ${page} de ${totalPages};
+
+        if (hasNextPage) {
+            btnNextPage.addEventListener("click", () => {
+                if (sort && !query) {
+                    window.location.href = `http://localhost:8080/api/products?page=${page + 1}&sort=${sort}`;
+                }
+
+                if (query && !sort) {
+                    window.location.href = `http://localhost:8080/api/products?page=${page + 1}&limit=${limit}&query=${query}`;
+                }
+                if (!query && !sort) {
+                    window.location.href = `http://localhost:8080/api/products?page=${page + 1}&limit=${limit}`;
+                }
+            });
+        } else {
+            btnNextPage.style.background = "grey";
+        }
+
+        if (hasPrevPage) {
+            btnPreviewPage.addEventListener("click", () => {
+                if (sort && !query) {
+                    window.location.href = `http://localhost:8080/api/products?page=${page - 1}&sort=${sort}`;
+                }
+                if (query && !sort) {
+                    window.location.href = `http://localhost:8080/api/products?page=${page - 1}&limit=${limit}&query=${query}`;
+                }
+                if (!query && !sort) {
+                    window.location.href = `http://localhost:8080/api/products?page=${page - 1}&limit=${limit}`;
+                }
+            });
+        } else {
+            btnPreviewPage.style.background = "grey";
+        }
+
+        const idCart = "6568dbb2d26183e385d11d0e"; // Carrito para pruebas.
+
+        btnAddCart.forEach(function (boton, indice) {
+            boton.addEventListener("click", function () {
+                const div = boton.parentElement;
+                const idProduct = div.querySelector("#idProduct");
+                console.log(idProduct.innerHTML);
+                const api = `http://localhost:8080/api/carts/${idCart}/products/${idProduct.innerHTML}`;
+                console.log(api);
+
+                var fetchOptions = {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                };
+
+                fetch(api, fetchOptions)
+                    .then(response => response.json())
+                    .then(data => {
+                        Swal.fire({
+                            title: "¡Excelente!",
+                            text: "¡Tu producto fue agregado con éxito!",
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1500
+                        });
+                    })
+                    .catch(error => {
+                        console.log("Error al realizar la solicitud POST", error);
+                    });
+            });
+        });
+    </script>
+</div>
