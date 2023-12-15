@@ -10,6 +10,11 @@ import * as service from "./services/chat.service.js";
 import { initMongoDB } from "./daos/mongodb/connection.js";
 import { register, login } from "./src/controllers/auth.controller.js";
 import { logout } from "./src/controllers/auth.controller.js";
+import passport from "passport";
+import session from "express-session";
+import passport from "./auth/auth.controller.js";
+import GitHubStrategy from "passport-github2";
+
 
 const persistence = "MONGO";
 
@@ -37,6 +42,17 @@ app.use("/chat", chatRouter);
 app.post("/register", register);
 app.post("/login", login);
 app.post("/logout", logout);
+app.post("/register", register);
+app.post("/login", login);
+
+
+// Configurar sesión y Passport
+app.use(passport.initialize());
+app.use(passport.session());
+app.use(session({ secret: "tu-secreto-aqui", resave: false, saveUninitialized: false }));
+
+
+
 
 let usuariosConectados = [];
 
@@ -73,3 +89,40 @@ socketServer.on("connection", async (socket) => {
 });
 
 export default socketServer;
+
+
+// Configuración de la estrategia de GitHub
+passport.use(
+    new GitHubStrategy(
+        {
+            clientID: "Iv1.477f7651eb3941ac",
+            clientSecret: "GITHUB_CLIENT_SECRET",
+            callbackURL: "http://localhost:8080/auth/github/callback",
+        },
+        (accessToken, refreshToken, profile, done) => {
+
+            require('dotenv').config();
+            const githubClientSecret = process.env.GITHUB_CLIENT_SECRET;
+
+
+            const user = {
+                githubId: profile.id,
+                username: profile.username,
+            };
+
+            return done(null, user);
+        }
+    )
+);
+
+app.use(passport.authenticate("github"));
+
+// Ruta de retorno después de la autenticación de GitHub
+app.get(
+    "/auth/github/callback",
+    passport.authenticate("github", { failureRedirect: "/login" }),
+    (req, res) => {
+        // Redirección exitosa después de la autenticación de GitHub
+        res.redirect("/products");
+    }
+);
