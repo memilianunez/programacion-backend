@@ -10,6 +10,7 @@ import * as service from "./services/chat.service.js";
 import { initMongoDB } from "./daos/mongodb/connection.js";
 import { register, login } from "./src/controllers/auth.controller.js";
 import { logout } from "./src/controllers/auth.controller.js";
+import authRouter from "./src/routes/auth.routes.js";
 
 const persistence = "MONGO";
 
@@ -37,6 +38,7 @@ app.use("/chat", chatRouter);
 app.post("/register", register);
 app.post("/login", login);
 app.post("/logout", logout);
+app.use("/auth", authRouter);
 
 let usuariosConectados = [];
 

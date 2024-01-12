@@ -1,21 +1,22 @@
 import bcrypt from "bcrypt";
 import passport from "passport";
-import { Strategy as LocalStrategy } from "passport-local";
+import LocalStrategy from "passport-local";
 
 const users = [];
 
-
 passport.use(
-    new LocalStrategy({ usernameField: "email" }, async (email, password, done) => {
+    new LocalStrategy(async (username, password, done) => {
         try {
-            const user = users.find((user) => user.email === email);
+            const user = users.find((user) => user.email === username);
+
             if (!user) {
-                return done(null, false, { message: errorMessages.incorrectCredentials });
+                return done(null, false, { message: "Credenciales incorrectas." });
             }
 
             const passwordMatch = await bcrypt.compare(password, user.password);
+
             if (!passwordMatch) {
-                return done(null, false, { message: errorMessages.incorrectCredentials });
+                return done(null, false, { message: "Credenciales incorrectas." });
             }
 
             return done(null, user);
@@ -34,21 +35,16 @@ passport.deserializeUser((email, done) => {
     done(null, user);
 });
 
-export const login = passport.authenticate("local", {
-    successRedirect: "/products",
-    failureRedirect: "/login",
-    failureFlash: true,
-});
-
-
-
 export const register = async (req, res) => {
     try {
         const { email, password } = req.body;
 
         const existingUser = users.find((user) => user.email === email);
         if (existingUser) {
-            return res.status(400).json({ error: "ValidationError", message: errorMessages.userAlreadyExists });
+            return res.status(400).json({
+                error: "ValidationError",
+                message: errorMessages.userAlreadyExists,
+            });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -56,48 +52,27 @@ export const register = async (req, res) => {
         const newUser = { email, password: hashedPassword, role: "usuario" };
         users.push(newUser);
 
-        res.redirect('/login');
+        res.redirect("/login");
     } catch (error) {
         console.error("Error en el registro:", error);
-        res.status(500).json({ error: "ServerError", message: "Error en el servidor." });
+        res
+            .status(500)
+            .json({ error: "ServerError", message: "Error en el servidor." });
     }
 };
 
-// export const login = async (req, res) => {
-//     try {
-//         const { email, password } = req.body;
-
-//         const user = users.find((user) => user.email === email);
-//         if (!user) {
-//             return res.status(401).json({ error: "AuthenticationError", message: errorMessages.incorrectCredentials });
-//         }
-
-//         const passwordMatch = await bcrypt.compare(password, user.password);
-//         if (!passwordMatch) {
-//             return res.status(401).json({ error: "AuthenticationError", message: errorMessages.incorrectCredentials });
-//         }
-
-//         req.session.userRole = user.role;
-
-//         res.redirect('/products');
-//     } catch (error) {
-//         console.error("Error en el inicio de sesión:", error);
-//         res.status(500).json({ error: "ServerError", message: "Error en el servidor." });
-//     }
-// };
+export const login = (req, res, next) => {
+    passport.authenticate("local", {
+        successRedirect: "/products",
+        failureRedirect: "/login",
+        failureFlash: true,
+    })(req, res, next);
+};
 
 export const logout = (req, res) => {
     try {
-        // Destruye la sesión:
-        req.session.destroy((err) => {
-            if (err) {
-                console.error("Error al cerrar sesión:", err);
-                return res.status(500).json({ message: "Error al cerrar sesión." });
-            }
-
-            // Redirige al usuario a la página de login después de cerrar sesión:
-            res.redirect('/login');
-        });
+        req.logout();
+        res.redirect("/login");
     } catch (error) {
         console.error("Error al cerrar sesión:", error);
         res.status(500).json({ message: "Error al cerrar sesión." });
@@ -109,4 +84,4 @@ const errorMessages = {
     incorrectCredentials: "Credenciales incorrectas.",
 };
 
-
+export default passport;
