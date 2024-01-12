@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const fs = require('fs');
+const session = require('express-session');
 const io = require('socket.io')(); 
 
 
@@ -23,7 +24,11 @@ router.get('/', (req, res) => {
     const userRole = req.session.userRole || 'usuario';
     const welcomeMessage = `Bienvenido, ${userRole === 'admin' ? 'Administrador' : 'Usuario'}`;
 
-    res.status(200).json({ status: 'success', payload: productsData, message: welcomeMessage});
+    res.status(200).json({
+        status: 'success',
+        payload: productsData,
+        message: welcomeMessage,
+    });
 });
 
 
