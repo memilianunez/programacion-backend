@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import UserModel from '../models/user.model';
+import UserModel from '../src/mongodb/models/user.model';
 
 export const register = async (req, res) => {
     try {
