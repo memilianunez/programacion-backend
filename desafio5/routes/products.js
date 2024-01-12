@@ -20,7 +20,10 @@ function generateRandomID() {
 
 router.get('/', (req, res) => {
     const productsData = JSON.parse(fs.readFileSync('src/products.json', 'utf-8'));
-    res.status(200).json({ status: 'success', payload: productsData });
+    const userRole = req.session.userRole || 'usuario';
+    const welcomeMessage = `Bienvenido, ${userRole === 'admin' ? 'Administrador' : 'Usuario'}`;
+
+    res.status(200).json({ status: 'success', payload: productsData, message: welcomeMessage});
 });
 
 

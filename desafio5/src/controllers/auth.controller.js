@@ -39,7 +39,7 @@ export const login = async (req, res) => {
 
         req.session.userRole = user.role;
 
-        res.redirect('/routes/products');
+        res.redirect('src/products.json');
     } catch (error) {
         console.error("Error en el inicio de sesión:", error);
         res.status(500).json({ error: "ServerError", message: "Error en el servidor." });
