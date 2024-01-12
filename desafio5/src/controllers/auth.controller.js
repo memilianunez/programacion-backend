@@ -1,25 +1,24 @@
 import bcrypt from "bcrypt";
-
-const users = [];
+import UserModel from '../models/user.model';
 
 export const register = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const existingUser = users.find((user) => user.email === email);
+        const existingUser = await UserModel.findOne({ email });
         if (existingUser) {
-            return res.status(400).json({ error: "ValidationError", message: errorMessages.userAlreadyExists });
+            return res.status(400).json({ error: 'ValidationError', message: errorMessages.userAlreadyExists });
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const newUser = { email, password: hashedPassword, role: "usuario" };
-        users.push(newUser);
+        const newUser = new UserModel({ email, password: hashedPassword, role: 'usuario' });
+        await newUser.save();
 
         res.redirect('/login');
     } catch (error) {
-        console.error("Error en el registro:", error);
-        res.status(500).json({ error: "ServerError", message: "Error en el servidor." });
+        console.error('Error en el registro:', error);
+        res.status(500).json({ error: 'ServerError', message: 'Error en el servidor.' });
     }
 };
 
@@ -27,22 +26,22 @@ export const login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
-        const user = users.find((user) => user.email === email);
+        const user = await UserModel.findOne({ email });
         if (!user) {
-            return res.status(401).json({ error: "AuthenticationError", message: errorMessages.incorrectCredentials });
+            return res.status(401).json({ error: 'AuthenticationError', message: errorMessages.incorrectCredentials });
         }
 
         const passwordMatch = await bcrypt.compare(password, user.password);
         if (!passwordMatch) {
-            return res.status(401).json({ error: "AuthenticationError", message: errorMessages.incorrectCredentials });
+            return res.status(401).json({ error: 'AuthenticationError', message: errorMessages.incorrectCredentials });
         }
 
         req.session.userRole = user.role;
 
-        res.redirect('src/products.json');
+        res.redirect('/products');
     } catch (error) {
-        console.error("Error en el inicio de sesión:", error);
-        res.status(500).json({ error: "ServerError", message: "Error en el servidor." });
+        console.error('Error en el inicio de sesión:', error);
+        res.status(500).json({ error: 'ServerError', message: 'Error en el servidor.' });
     }
 };
 
