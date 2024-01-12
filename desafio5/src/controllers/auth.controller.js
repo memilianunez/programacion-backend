@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
+import passport from "passport";
 import UserModel from '../src/mongodb/models/user.model';
+
 
 export const register = async (req, res) => {
     try {
@@ -22,41 +24,16 @@ export const register = async (req, res) => {
     }
 };
 
-export const login = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        const user = await UserModel.findOne({ email });
-        if (!user) {
-            return res.status(401).json({ error: 'AuthenticationError', message: errorMessages.incorrectCredentials });
-        }
-
-        const passwordMatch = await bcrypt.compare(password, user.password);
-        if (!passwordMatch) {
-            return res.status(401).json({ error: 'AuthenticationError', message: errorMessages.incorrectCredentials });
-        }
-
-        req.session.userRole = user.role;
-
-        res.redirect('/products');
-    } catch (error) {
-        console.error('Error en el inicio de sesión:', error);
-        res.status(500).json({ error: 'ServerError', message: 'Error en el servidor.' });
-    }
-};
+export const login = passport.authenticate("local", {
+    successRedirect: '/products',
+    failureRedirect: '/login',
+    failureFlash: true,
+});
 
 export const logout = (req, res) => {
     try {
-        // Destruye la sesión:
-        req.session.destroy((err) => {
-            if (err) {
-                console.error("Error al cerrar sesión:", err);
-                return res.status(500).json({ message: "Error al cerrar sesión." });
-            }
-
-            // Redirige al usuario a la página de login después de cerrar sesión:
-            res.redirect('/login');
-        });
+        req.logout();
+        res.redirect('/login');
     } catch (error) {
         console.error("Error al cerrar sesión:", error);
         res.status(500).json({ message: "Error al cerrar sesión." });
