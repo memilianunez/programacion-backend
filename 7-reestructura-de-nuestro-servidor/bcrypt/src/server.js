@@ -8,6 +8,8 @@ import './config/dbConnection.js';
 import { connectionString } from './config/dbConnection.js';
 import handlebars from 'express-handlebars';
 import { __dirname } from './utils.js';
+import apiRoutes from "./routes/index.routes.js"
+import viewRoutes from "./routes/views.routes.js"
 
 const mongoStoreOptions = {
     store: MongoStore.create({
@@ -42,3 +44,15 @@ app.use('/', viewsRouter);
 app.listen(8080, ()=>{
 console.log('🚀 Server listening on port 8080');
 });
+
+
+
+const PORT = 8080;
+// Rutas para la api 
+app.use("/api", apiRoutes);
+// Rutas exclusivas para las vistas
+app.use("/", viewRoutes);
+
+app.listen(PORT, () => {
+    console.log(`Servidor en puerto ${PORT}`);
+})
