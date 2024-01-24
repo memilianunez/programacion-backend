@@ -1,29 +1,19 @@
 import { Router } from "express"
+import ProductController from '../controllers/product.controllers.js';
 
 const router = Router();
 
-router.get("/", (req, res) => {
+const controller = new ProductController();
 
-    res.send("Api products");
-    
-})
 
-router.post("/", (req, res) => {
+router.get('/', controller.getAll);
 
-    res.send("Api products");
-    
-})
+router.get('/:id', controller.getById);
 
-router.put("/:id", (req, res) => {
+router.post('/', controller.create);
 
-    res.send("Api products");
-    
-})
+router.put('/:id', controller.update);
 
-router.delete("/:id", (req, res) => {
-
-    res.send("Api products");
-    
-})
+router.delete('/:id', controller.delete);
 
 export default router;
